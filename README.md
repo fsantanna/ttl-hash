@@ -21,28 +21,37 @@ Notes about `TTL-Hash`:
 
 [1]: https://en.wikipedia.org/wiki/List_of_hash_functions
 
-# Example
+# Guide
 
-- TODO
-    - very simple abstract example which initializes a table, manipulates
-      values in a loop calling the tick function
-    - substitute <...>
+## General Structure
 
-```
-#define TTL_HASH_C      // include implementation here
-#include "ttl_hash"
+```c
+#define TTL_HASH_C
+#include "ttl_hash.h"
 
-// <open>
-while (...) {
-    ...
-    // <get>
-    ...
-    // <add>
-    ...
-    // <tick>
+// uses open, get, put, tick, close
 
+int main (void) {
+    ttl_hash* ht = ttl_hash_open(16, 3, cleanup_callback);
+
+    while (running) {
+        void* val = ttl_hash_get(ht, len, key);
+        if (val == NULL) {
+            ttl_hash_put(ht, key_len, key, value);
+        }
+        ttl_hash_tick(ht);
+    }
+
+    ttl_hash_close(ht);
 }
-// <close>
+```
+
+## Example
+
+See [hello.c](hello.c) for a minimal example.
+
+```bash
+gcc -o hello hello.c && ./hello
 ```
 
 # API
@@ -88,7 +97,7 @@ while (...) {
             callback eventually.
         - If the key already exists, the new value substitutes the old, which
           is passed to the cleanup callback.
-        - TODO: substitute with algorithm complexity
+        - Complexity: O(n buckets)
 
 - `void* ttl_hash_get (ttl_hash* ht, int n, const void* key)`
     - Retrieves the value associated with the given hash table and key.
@@ -99,7 +108,7 @@ while (...) {
     - Return:
         - `void*` | pointer to associated value (`NULL` if non existent)
     - Notes
-        - TODO: substitute with algorithm complexity
+        - Complexity: O(n buckets)
 
 - `int ttl_hash_rem (ttl_hash* ht, int n, const void* key)`
     - Removes the key-value pair associated with the given hash table and key.
@@ -111,7 +120,7 @@ while (...) {
         - `int` | `0` on success (key exists)
     - Notes
         - The cleanup callback is called for the key-value pair.
-        - TODO: substitute with algorithm complexity
+        - Complexity: O(n buckets).
 
 - `void ttl_hash_tick (ttl_hash* ht)`
     - Decrements all key-value ttls at once, removing from the table those
@@ -121,4 +130,11 @@ while (...) {
     - Return:
         - `void` | nothing
     - Notes
-        - TODO: substitute with algorithm complexity
+        - Complexity: O(n buckets)
+
+# Tests
+
+```bash
+gcc -o unit unit.c && ./unit
+gcc -o app app.c && ./app
+```
