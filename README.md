@@ -22,9 +22,10 @@ Notes about `TTL-Hash`:
 
 # Example
 
-TODO: very simple abstract example which initializes a table, manipulates
+- TODO
+    - very simple abstract example which initializes a table, manipulates
       values in a loop calling the tick function
-TODO: substitute <...>
+    - substitute <...>
 
 ```
 #define TTL_HASH_C      // include implementation here
@@ -47,10 +48,10 @@ while (...) {
 
 - `typedef void (*cb_clean_t)(int tag, void* value)`
     - `cb_clean_t` is a function pointer type to cleanup callbacks.
-        A cleanup callback is called whenever a key
+        The callback is called whenever a key-value ttl expires.
     - Parameters:
-        `tag: int` | tag of the key-value
-        `value: void*` | value to clean
+        - `tag: int` | tag of the key-value
+        - `value: void*` | value to clean
 
 - `ttl_hash* ttl_hash_open (int n_buk, int n_ttl, cb_clean_t f)`
     - Creates a hash table with `n` buckets to hold entries.
@@ -72,13 +73,13 @@ while (...) {
 - `int ttl_hash_put (ttl_hash* ht, int tag, int n, const char* key, const void* value)`
     - Stores a key-value pair into the given hash table.
     - Parameters:
-        `ht: ttl_hash` | hash table to store
-        `tag: int` | key tag
-        `n: int` | key size
-        `key: char*` | key buffer
-        `value: void*` | value pointer
+        - `ht: ttl_hash` | hash table to store
+        - `tag: int` | key tag
+        - `n: int` | key size
+        - `key: char*` | key buffer
+        - `value: void*` | value pointer
     - Return:
-        `int` | `0` on sucess
+        - `int` | `0` on sucess
     - Notes:
         - The hash table manages the key, but not the value.
             It allocates, copies, and releases all key buffer bytes properly.
@@ -87,19 +88,18 @@ while (...) {
 
 - `void* ttl_hash_get (ttl_hash* ht, int tag, int n, const char* key)`
     - Retrieves the value associated with the given hash table and key.
-        
     - Parameters:
-        `ht: ttl_hash` | hash table to store
-        `tag: int` | key tag
-        `n: int` | key size
-        `key: char*` | key buffer
+        - `ht: ttl_hash` | hash table to store
+        - `tag: int` | key tag
+        - `n: int` | key size
+        - `key: char*` | key buffer
     - Return:
-        `void*` | pointer to associated value (`NULL` if non existent)
+        - `void*` | pointer to associated value (`NULL` if non existent)
     - Notes
         - TODO: substitute with algorithm complexity
 
 - `void ttl_hash_tick (ttl_hash* ht)`
-    - Decrements all key-value `ttls` at once, removing from the table those
+    - Decrements all key-value ttls at once, removing from the table those
       that reach `0`, and calling the cleanup callback for the value.
     - Parameters:
         - `ht: ttl_hash*`: hash table to tick
