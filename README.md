@@ -47,12 +47,12 @@ while (...) {
 
 # API
 
-- `typedef void (*cb_clean_t) (int n, const char* key, void* value)`
+- `typedef void (*cb_clean_t) (int n, const void* key, void* value)`
     - `cb_clean_t` is a function pointer type to cleanup callbacks.
         The callback is called whenever a key-value ttl expires.
     - Parameters:
         - `n: int` | key length
-        - `key: char*` | key buffer
+        - `key: void*` | key buffer
         - `value: void*` | value to clean
 
 - `ttl_hash* ttl_hash_open (int n_buk, int n_ttl, cb_clean_t f)`
@@ -60,7 +60,7 @@ while (...) {
     - Parameters:
         - `n_buk: int` | number of buckets
         - `n_ttl: int` | starting ttl for key-value pairs
-        - `f: cb_clean_t` | cleanup callback for expired ttls
+        - `f: cb_clean_t` | cleanup callback for expired ttls (optional)
     - Return:
         - `ttl_hash*` | a pointer to the new hash table
 
@@ -72,15 +72,15 @@ while (...) {
     - Return:
         - `void` | nothing
 
-- `int ttl_hash_put (ttl_hash* ht, int n, const char* key, const void* value)`
+- `int ttl_hash_put (ttl_hash* ht, int n, const void* key, void* value)`
     - Stores a key-value pair into the given hash table.
     - Parameters:
         - `ht: ttl_hash` | hash table to store
         - `n: int` | key length
-        - `key: char*` | key buffer
+        - `key: void*` | key buffer
         - `value: void*` | non-NULL value pointer
     - Return:
-        - `int` | `0` on sucess
+        - `int` | `0` on success
     - Notes:
         - The hash table owns the key, but not the value.
             It allocates, copies, and releases all key buffer bytes properly.
@@ -90,25 +90,25 @@ while (...) {
           is passed to the cleanup callback.
         - TODO: substitute with algorithm complexity
 
-- `void* ttl_hash_get (ttl_hash* ht, int n, const char* key)`
+- `void* ttl_hash_get (ttl_hash* ht, int n, const void* key)`
     - Retrieves the value associated with the given hash table and key.
     - Parameters:
         - `ht: ttl_hash` | hash table to store
         - `n: int` | key length
-        - `key: char*` | key buffer
+        - `key: void*` | key buffer
     - Return:
         - `void*` | pointer to associated value (`NULL` if non existent)
     - Notes
         - TODO: substitute with algorithm complexity
 
-- `int ttl_hash_rem (ttl_hash* ht, int n, const char* key)`
+- `int ttl_hash_rem (ttl_hash* ht, int n, const void* key)`
     - Removes the key-value pair associated with the given hash table and key.
     - Parameters:
         - `ht: ttl_hash` | hash table to remove
         - `n: int` | key length
-        - `key: char*` | key buffer
+        - `key: void*` | key buffer
     - Return:
-        - `int` | `0` on success
+        - `int` | `0` if non existent
     - Notes
         - The cleanup callback is called for the value.
         - TODO: substitute with algorithm complexity
