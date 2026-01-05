@@ -27,9 +27,9 @@ This is a single-header library. To use:
 Build using Makefile:
 
 ```bash
-make           # build everything (hello + tests)
-make hello     # build hello example
-make tests     # build and run tests with valgrind
+make           # build and run hello example
+make hello     # build and run hello example
+make tests     # build and run all tests with valgrind
 make clean     # remove all binaries
 ```
 
@@ -37,7 +37,6 @@ Or compile manually:
 
 ```bash
 gcc -Wall -Wextra -o hello hello.c
-gcc -Wall -Wextra -I. -o tst/unit tst/unit.c
 gcc -Wall -Wextra -I. -o tst/app tst/app.c
 ```
 
