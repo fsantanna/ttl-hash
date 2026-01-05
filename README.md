@@ -2,8 +2,8 @@
 
 `TTL-Hash` is a simple hash table with time-to-live key-value pairs.
 
-- A key is a memory buffer with an associated numeric tag.
-- A value is a simple pointer to an application payload.
+- A key is a memory buffer with an associated numeric tag (owned by the library).
+- A value is a simple pointer to a payload (owned by the application).
 
 Two keys match when they have the exact same memory bytes and tag.
 
@@ -17,6 +17,7 @@ Notes about `TTL-Hash`:
 
 - implemented as a single-header library
 - uses the simple [DJB2][1] hashing algorithm
+- it is not thread safe
 
 [1]: https://en.wikipedia.org/wiki/List_of_hash_functions
 
@@ -77,13 +78,16 @@ while (...) {
         - `tag: int` | key tag
         - `n: int` | key size
         - `key: char*` | key buffer
-        - `value: void*` | value pointer
+        - `value: void*` | non-NULL value pointer
     - Return:
         - `int` | `0` on sucess
     - Notes:
-        - The hash table manages the key, but not the value.
+        - The hash table owns the key, but not the value.
             It allocates, copies, and releases all key buffer bytes properly.
-            It ignores the value pointer, only passing it to the cleanup callback.
+            It ignores the value pointer, only passing it to the cleanup
+            callback eventually.
+        - If the key already exists, the new value subsititues the old, which
+          is passed to the cleanup callback.
         - TODO: substitute with algorithm complexity
 
 - `void* ttl_hash_get (ttl_hash* ht, int tag, int n, const char* key)`
@@ -96,6 +100,19 @@ while (...) {
     - Return:
         - `void*` | pointer to associated value (`NULL` if non existent)
     - Notes
+        - TODO: substitute with algorithm complexity
+
+- `int ttl_hash_rem (ttl_hash* ht, int tag, int n, const char* key)`
+    - Removes the key-value pair associated with the given hash table and key.
+    - Parameters:
+        - `ht: ttl_hash` | hash table to remove
+        - `tag: int` | key tag
+        - `n: int` | key size
+        - `key: char*` | key buffer
+    - Return:
+        - `int` | `0` on sucess
+    - Notes
+        - The cleanup callback is called for the value.
         - TODO: substitute with algorithm complexity
 
 - `void ttl_hash_tick (ttl_hash* ht)`
