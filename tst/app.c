@@ -15,10 +15,9 @@ typedef struct {
 static int expired_count = 0;
 
 static void session_cleanup(int n, const void* key, void* value) {
-    (void)n;
     session_t* session = (session_t*)value;
-    printf("  [cleanup] session expired: id=%d key=%s user=%s\n",
-           session->session_id, (const char*)key, session->username);
+    printf("  [cleanup] session expired: id=%d key=%.*s user=%s\n",
+           session->session_id, n, (const char*)key, session->username);
     free(session);
     expired_count++;
 }
