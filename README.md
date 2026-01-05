@@ -1,5 +1,10 @@
 # ttl-hash
 
+[![Tests][badge]][test]
+
+[badge]: https://github.com/fsantanna/ttl-hash/actions/workflows/test.yml/badge.svg
+[test]:  https://github.com/fsantanna/ttl-hash/actions/workflows/test.yml
+
 `TTL-Hash` is a simple hash table for caches with time-to-live key-value pairs.
 
 - A key is a plain memory buffer (owned by the library).
