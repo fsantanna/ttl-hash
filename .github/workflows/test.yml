@@ -12,6 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install valgrind
-      run: sudo apt install valgrind
+      run: |
+        sudo apt update
+        sudo apt install valgrind
     - name: Build tests
       run: make tests
