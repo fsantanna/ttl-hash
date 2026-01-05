@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef void (*cb_clean_t)(int n, const void* key, void* value);
+typedef void (*cb_clean_t) (int n, const void* key, void* value);
 
 typedef struct ttl_hash_entry {
     int n;
@@ -14,26 +14,26 @@ typedef struct ttl_hash_entry {
     struct ttl_hash_entry* next;
 } ttl_hash_entry;
 
-typedef struct ttl_hash {
+typedef struct {
     int n_buk;
     int n_ttl;
     cb_clean_t clean;
     ttl_hash_entry** buckets;
 } ttl_hash;
 
-ttl_hash* ttl_hash_open(int n_buk, int n_ttl, cb_clean_t f);
-void ttl_hash_close(ttl_hash* ht);
-int ttl_hash_put(ttl_hash* ht, int n, const void* key, void* value);
-void* ttl_hash_get(ttl_hash* ht, int n, const void* key);
-int ttl_hash_rem(ttl_hash* ht, int n, const void* key);
-void ttl_hash_tick(ttl_hash* ht);
+ttl_hash* ttl_hash_open  (int n_buk, int n_ttl, cb_clean_t f);
+void      ttl_hash_close (ttl_hash* ht);
+int       ttl_hash_put   (ttl_hash* ht, int n, const void* key, void* value);
+void*     ttl_hash_get   (ttl_hash* ht, int n, const void* key);
+int       ttl_hash_rem   (ttl_hash* ht, int n, const void* key);
+void      ttl_hash_tick  (ttl_hash* ht);
 
 #endif
 
 #ifdef TTL_HASH_C
 
 /* DJB2 hash function */
-static unsigned long ttl_hash_djb2(int n, const void* key) {
+static unsigned long ttl_hash_djb2 (int n, const void* key) {
     unsigned long hash = 5381;
     const unsigned char* p = (const unsigned char*)key;
     for (int i = 0; i < n; i++) {
@@ -43,7 +43,7 @@ static unsigned long ttl_hash_djb2(int n, const void* key) {
 }
 
 /* Find entry in bucket chain, return pointer to the link pointing to it */
-static ttl_hash_entry** ttl_hash_find(ttl_hash* ht, int n, const void* key) {
+static ttl_hash_entry** ttl_hash_find (ttl_hash* ht, int n, const void* key) {
     unsigned long hash = ttl_hash_djb2(n, key);
     int idx = hash % ht->n_buk;
     ttl_hash_entry** pp = &ht->buckets[idx];
@@ -58,7 +58,7 @@ static ttl_hash_entry** ttl_hash_find(ttl_hash* ht, int n, const void* key) {
 }
 
 /* Remove entry and call cleanup callback */
-static void ttl_hash_remove_entry(ttl_hash* ht, ttl_hash_entry** pp) {
+static void ttl_hash_remove_entry (ttl_hash* ht, ttl_hash_entry** pp) {
     ttl_hash_entry* e = *pp;
     *pp = e->next;
     if (ht->clean != NULL) {
@@ -68,12 +68,12 @@ static void ttl_hash_remove_entry(ttl_hash* ht, ttl_hash_entry** pp) {
     free(e);
 }
 
-ttl_hash* ttl_hash_open(int n_buk, int n_ttl, cb_clean_t f) {
-    ttl_hash* ht = (ttl_hash*)malloc(sizeof(ttl_hash));
+ttl_hash* ttl_hash_open (int n_buk, int n_ttl, cb_clean_t f) {
+    ttl_hash* ht = malloc(sizeof(ttl_hash));
     if (ht == NULL) {
         return NULL;
     }
-    ht->buckets = (ttl_hash_entry**)calloc(n_buk, sizeof(ttl_hash_entry*));
+    ht->buckets = calloc(n_buk, sizeof(ttl_hash_entry*));
     if (ht->buckets == NULL) {
         free(ht);
         return NULL;
@@ -84,7 +84,7 @@ ttl_hash* ttl_hash_open(int n_buk, int n_ttl, cb_clean_t f) {
     return ht;
 }
 
-void ttl_hash_close(ttl_hash* ht) {
+void ttl_hash_close (ttl_hash* ht) {
     for (int i = 0; i < ht->n_buk; i++) {
         while (ht->buckets[i] != NULL) {
             ttl_hash_remove_entry(ht, &ht->buckets[i]);
@@ -94,7 +94,7 @@ void ttl_hash_close(ttl_hash* ht) {
     free(ht);
 }
 
-int ttl_hash_put(ttl_hash* ht, int n, const void* key, void* value) {
+int ttl_hash_put (ttl_hash* ht, int n, const void* key, void* value) {
     ttl_hash_entry** pp = ttl_hash_find(ht, n, key);
 
     /* Key exists: replace value */
@@ -127,7 +127,7 @@ int ttl_hash_put(ttl_hash* ht, int n, const void* key, void* value) {
     return 0;
 }
 
-void* ttl_hash_get(ttl_hash* ht, int n, const void* key) {
+void* ttl_hash_get (ttl_hash* ht, int n, const void* key) {
     ttl_hash_entry** pp = ttl_hash_find(ht, n, key);
     if (*pp == NULL) {
         return NULL;
@@ -137,7 +137,7 @@ void* ttl_hash_get(ttl_hash* ht, int n, const void* key) {
     return e->value;
 }
 
-int ttl_hash_rem(ttl_hash* ht, int n, const void* key) {
+int ttl_hash_rem (ttl_hash* ht, int n, const void* key) {
     ttl_hash_entry** pp = ttl_hash_find(ht, n, key);
     if (*pp == NULL) {
         return -1;
@@ -146,7 +146,7 @@ int ttl_hash_rem(ttl_hash* ht, int n, const void* key) {
     return 0;
 }
 
-void ttl_hash_tick(ttl_hash* ht) {
+void ttl_hash_tick (ttl_hash* ht) {
     for (int i = 0; i < ht->n_buk; i++) {
         ttl_hash_entry** pp = &ht->buckets[i];
         while (*pp != NULL) {
