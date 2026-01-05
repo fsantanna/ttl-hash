@@ -108,9 +108,9 @@ while (...) {
         - `n: int` | key length
         - `key: void*` | key buffer
     - Return:
-        - `int` | `0` if non existent
+        - `int` | `0` on success (key exists)
     - Notes
-        - The cleanup callback is called for the value.
+        - The cleanup callback is called for the key-value pair.
         - TODO: substitute with algorithm complexity
 
 - `void ttl_hash_tick (ttl_hash* ht)`
