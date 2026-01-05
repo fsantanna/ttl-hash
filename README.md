@@ -52,6 +52,8 @@ See [hello.c](hello.c) for a minimal example.
 
 ```bash
 gcc -o hello hello.c && ./hello
+# or
+make hello
 ```
 
 # API
@@ -135,6 +137,8 @@ gcc -o hello hello.c && ./hello
 # Tests
 
 ```bash
-gcc -o unit unit.c && ./unit
-gcc -o app app.c && ./app
+gcc -I. -o tst/unit tst/unit.c && ./tst/unit
+gcc -I. -o tst/app tst/app.c && ./tst/app
+# or
+make test
 ```
