@@ -56,7 +56,7 @@ int main (void) {
 See [hello.c](hello.c) for a minimal example.
 
 ```bash
-gcc -o hello hello.c && ./hello
+gcc -o hello.exe hello.c && ./hello.exe
 # or
 make hello
 ```

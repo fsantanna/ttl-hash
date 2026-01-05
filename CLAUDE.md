@@ -36,8 +36,10 @@ make clean     # remove all binaries
 Or compile manually:
 
 ```bash
-gcc -Wall -Wextra -o hello hello.c
-gcc -Wall -Wextra -I. -o tst/app tst/app.c
+gcc -Wall -Wextra -o hello.exe hello.c
+gcc -Wall -Wextra -I. -o tst/unit.exe tst/unit.c
+gcc -Wall -Wextra -I. -o tst/app.exe tst/app.c
+gcc -Wall -Wextra -I. -o tst/bench.exe tst/bench.c
 ```
 
 ## Code Style

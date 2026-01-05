@@ -7,16 +7,16 @@ VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes 
 all: hello
 
 hello: hello.c ttl_hash.h
-	$(CC) $(CFLAGS) -o hello hello.c
-	./hello
+	$(CC) $(CFLAGS) -o hello.exe hello.c
+	./hello.exe
 
 tests: tst/unit.c tst/app.c tst/bench.c ttl_hash.h
-	$(CC) $(CFLAGS) -I. -o tst/unit tst/unit.c
-	$(VALGRIND) ./tst/unit
-	$(CC) $(CFLAGS) -I. -o tst/app tst/app.c
-	$(VALGRIND) ./tst/app
-	$(CC) $(CFLAGS) -I. -o tst/bench tst/bench.c
-	$(VALGRIND) ./tst/bench
+	$(CC) $(CFLAGS) -I. -o tst/unit.exe tst/unit.c
+	$(VALGRIND) ./tst/unit.exe
+	$(CC) $(CFLAGS) -I. -o tst/app.exe tst/app.c
+	$(VALGRIND) ./tst/app.exe
+	$(CC) $(CFLAGS) -I. -o tst/bench.exe tst/bench.c
+	$(VALGRIND) ./tst/bench.exe
 
 clean:
-	rm -f hello tst/unit tst/app tst/bench
+	rm -f hello.exe tst/unit.exe tst/app.exe tst/bench.exe
