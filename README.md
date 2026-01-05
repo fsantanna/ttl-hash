@@ -1,11 +1,11 @@
 # ttl-hash
 
-`TTL-Hash` is a simple hash table with time-to-live key-value pairs.
+`TTL-Hash` is a simple hash table for caches with time-to-live key-value pairs.
 
-- A key is a memory buffer with an associated numeric tag (owned by the library).
-- A value is a simple pointer to a payload (owned by the application).
+- A key is a plain memory buffer (owned by the library).
+- A value is an opaque pointer to a payload (owned by the application).
 
-Two keys match when they have the exact same memory bytes and tag.
+Two keys match when they have the exact same memory bytes.
 
 Each key-value pair starts with a time-to-live counter (`ttl`), which is reset
 after each retrieval.
@@ -47,11 +47,12 @@ while (...) {
 
 # API
 
-- `typedef void (*cb_clean_t)(int tag, void* value)`
+- `typedef void (*cb_clean_t) (int n, const char* key, void* value)`
     - `cb_clean_t` is a function pointer type to cleanup callbacks.
         The callback is called whenever a key-value ttl expires.
     - Parameters:
-        - `tag: int` | tag of the key-value
+        - `n: int` | key length
+        - `key: char*` | key buffer
         - `value: void*` | value to clean
 
 - `ttl_hash* ttl_hash_open (int n_buk, int n_ttl, cb_clean_t f)`
@@ -71,12 +72,11 @@ while (...) {
     - Return:
         - `void` | nothing
 
-- `int ttl_hash_put (ttl_hash* ht, int tag, int n, const char* key, const void* value)`
+- `int ttl_hash_put (ttl_hash* ht, int n, const char* key, const void* value)`
     - Stores a key-value pair into the given hash table.
     - Parameters:
         - `ht: ttl_hash` | hash table to store
-        - `tag: int` | key tag
-        - `n: int` | key size
+        - `n: int` | key length
         - `key: char*` | key buffer
         - `value: void*` | non-NULL value pointer
     - Return:
@@ -86,31 +86,29 @@ while (...) {
             It allocates, copies, and releases all key buffer bytes properly.
             It ignores the value pointer, only passing it to the cleanup
             callback eventually.
-        - If the key already exists, the new value subsititues the old, which
+        - If the key already exists, the new value substitues the old, which
           is passed to the cleanup callback.
         - TODO: substitute with algorithm complexity
 
-- `void* ttl_hash_get (ttl_hash* ht, int tag, int n, const char* key)`
+- `void* ttl_hash_get (ttl_hash* ht, int n, const char* key)`
     - Retrieves the value associated with the given hash table and key.
     - Parameters:
         - `ht: ttl_hash` | hash table to store
-        - `tag: int` | key tag
-        - `n: int` | key size
+        - `n: int` | key length
         - `key: char*` | key buffer
     - Return:
         - `void*` | pointer to associated value (`NULL` if non existent)
     - Notes
         - TODO: substitute with algorithm complexity
 
-- `int ttl_hash_rem (ttl_hash* ht, int tag, int n, const char* key)`
+- `int ttl_hash_rem (ttl_hash* ht, int n, const char* key)`
     - Removes the key-value pair associated with the given hash table and key.
     - Parameters:
         - `ht: ttl_hash` | hash table to remove
-        - `tag: int` | key tag
-        - `n: int` | key size
+        - `n: int` | key length
         - `key: char*` | key buffer
     - Return:
-        - `int` | `0` on sucess
+        - `int` | `0` on success
     - Notes
         - The cleanup callback is called for the value.
         - TODO: substitute with algorithm complexity
