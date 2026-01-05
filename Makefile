@@ -2,15 +2,15 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 -q
 
-.PHONY: all clean test hello tst/unit tst/app tst/bench
+.PHONY: all clean tests hello tst/unit tst/app tst/bench
 
-all: hello test
+all: hello
 
 hello: hello.c ttl_hash.h
 	$(CC) $(CFLAGS) -o hello hello.c
 	./hello
 
-test: tst/unit tst/app tst/bench
+tests: tst/unit tst/app tst/bench
 
 tst/unit: tst/unit.c ttl_hash.h
 	$(CC) $(CFLAGS) -I. -o tst/unit tst/unit.c

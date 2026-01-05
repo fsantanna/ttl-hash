@@ -29,7 +29,7 @@ Build using Makefile:
 ```bash
 make           # build everything (hello + tests)
 make hello     # build hello example
-make test      # build and run tests with valgrind
+make tests     # build and run tests with valgrind
 make clean     # remove all binaries
 ```
 
