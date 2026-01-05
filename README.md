@@ -61,6 +61,11 @@ gcc -o hello hello.c && ./hello
 make hello
 ```
 
+## Tests
+
+```bash
+make tests  # runs tests with valgrind
+```
 # API
 
 - `typedef void (*cb_clean_t) (int n, const void* key, void* value)`
@@ -138,12 +143,3 @@ make hello
         - `void` | nothing
     - Notes
         - Complexity: O(n buckets)
-
-# Tests
-
-```bash
-gcc -I. -o tst/unit tst/unit.c && ./tst/unit
-gcc -I. -o tst/app tst/app.c && ./tst/app
-# or
-make tests  # runs tests with valgrind
-```
