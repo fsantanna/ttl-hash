@@ -16,10 +16,10 @@ table, and a registered callback may cleanup the value.
 Notes about `TTL-Hash`:
 
 - implemented as a single-header library
-- uses the simple [DJB2][1] hashing algorithm
+- uses the simple [DJB2][djb2] hashing algorithm
 - it is not thread safe
 
-[1]: https://en.wikipedia.org/wiki/List_of_hash_functions
+[djb2]: https://en.wikipedia.org/wiki/List_of_hash_functions
 
 # Guide
 

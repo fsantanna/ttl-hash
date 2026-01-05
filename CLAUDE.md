@@ -12,6 +12,7 @@ TTL-Hash is a single-header C library implementing a hash table with time-to-liv
 - `hello.c` - Minimal usage example
 - `tst/unit.c` - Unit tests for all APIs
 - `tst/app.c` - Session cache simulation demonstrating recurrent usage
+- `tst/bench.c` - Complexity benchmark proving O(1) hash table vs O(n) linked list
 - `Makefile` - Build configuration
 
 ## Build Commands
