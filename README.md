@@ -140,5 +140,5 @@ make hello
 gcc -I. -o tst/unit tst/unit.c && ./tst/unit
 gcc -I. -o tst/app tst/app.c && ./tst/app
 # or
-make test
+make test  # runs tests with valgrind
 ```

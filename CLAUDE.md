@@ -28,7 +28,7 @@ Build using Makefile:
 ```bash
 make           # build everything (hello + tests)
 make hello     # build hello example
-make test      # build tests (tst/unit and tst/app)
+make test      # build and run tests with valgrind
 make clean     # remove all binaries
 ```
 
