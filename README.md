@@ -49,7 +49,7 @@ while (...) {
 
 - `typedef void (*cb_clean_t) (int n, const void* key, void* value)`
     - `cb_clean_t` is a function pointer type to cleanup callbacks.
-        The callback is called whenever a key-value ttl expires.
+        The callback is called whenever a key-value is removed.
     - Parameters:
         - `n: int` | key length
         - `key: void*` | key buffer
@@ -86,14 +86,14 @@ while (...) {
             It allocates, copies, and releases all key buffer bytes properly.
             It ignores the value pointer, only passing it to the cleanup
             callback eventually.
-        - If the key already exists, the new value substitues the old, which
+        - If the key already exists, the new value substitutes the old, which
           is passed to the cleanup callback.
         - TODO: substitute with algorithm complexity
 
 - `void* ttl_hash_get (ttl_hash* ht, int n, const void* key)`
     - Retrieves the value associated with the given hash table and key.
     - Parameters:
-        - `ht: ttl_hash` | hash table to store
+        - `ht: ttl_hash` | hash table to query
         - `n: int` | key length
         - `key: void*` | key buffer
     - Return:
