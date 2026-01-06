@@ -41,9 +41,3 @@ gcc -Wall -Wextra -I. -o tst/unit.exe tst/unit.c
 gcc -Wall -Wextra -I. -o tst/app.exe tst/app.c
 gcc -Wall -Wextra -I. -o tst/bench.exe tst/bench.c
 ```
-
-## Code Style
-
-- Comments only before blocks or functions, never inline
-- If lines require comments, create an explicit block for them
-- Single-header library pattern: header guards for declarations, `#ifdef TTL_HASH_C` for implementation
