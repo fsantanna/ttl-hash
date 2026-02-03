@@ -42,11 +42,11 @@ int main(void) {
         /* Add new sessions on certain ticks */
         if (tick == 1) {
             session_t* s1 = create_session(session_id++, "alice");
-            assert(ttl_hash_put(cache, 6, "sess_a", s1) == 0);
+            assert(ttl_hash_put(cache, 6, "sess_a", s1) != NULL);
             printf("  [put] added session for alice\n");
 
             session_t* s2 = create_session(session_id++, "bob");
-            assert(ttl_hash_put(cache, 6, "sess_b", s2) == 0);
+            assert(ttl_hash_put(cache, 6, "sess_b", s2) != NULL);
             printf("  [put] added session for bob\n");
 
             assert(ttl_hash_get(cache, 6, "sess_a") == s1);
@@ -55,14 +55,14 @@ int main(void) {
 
         if (tick == 3) {
             session_t* s3 = create_session(session_id++, "carol");
-            assert(ttl_hash_put(cache, 6, "sess_c", s3) == 0);
+            assert(ttl_hash_put(cache, 6, "sess_c", s3) != NULL);
             printf("  [put] added session for carol\n");
             assert(ttl_hash_get(cache, 6, "sess_c") == s3);
         }
 
         if (tick == 5) {
             session_t* s4 = create_session(session_id++, "dave");
-            assert(ttl_hash_put(cache, 6, "sess_d", s4) == 0);
+            assert(ttl_hash_put(cache, 6, "sess_d", s4) != NULL);
             printf("  [put] added session for dave\n");
             assert(ttl_hash_get(cache, 6, "sess_d") == s4);
         }
