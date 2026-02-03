@@ -36,8 +36,8 @@ int main(void) {
         int value1 = 100;
         int value2 = 200;
 
-        assert(ttl_hash_put(ht, 4, "key1", &value1) == 0);
-        assert(ttl_hash_put(ht, 4, "key2", &value2) == 0);
+        assert(ttl_hash_put(ht, 4, "key1", &value1) != NULL);
+        assert(ttl_hash_put(ht, 4, "key2", &value2) != NULL);
 
         assert(ttl_hash_get(ht, 4, "key1") == &value1);
         assert(ttl_hash_get(ht, 4, "key2") == &value2);
@@ -55,10 +55,10 @@ int main(void) {
         int value1 = 100;
         int value2 = 200;
 
-        assert(ttl_hash_put(ht, 3, "key", &value1) == 0);
+        assert(ttl_hash_put(ht, 3, "key", &value1) != NULL);
         assert(ttl_hash_get(ht, 3, "key") == &value1);
 
-        assert(ttl_hash_put(ht, 3, "key", &value2) == 0);
+        assert(ttl_hash_put(ht, 3, "key", &value2) != NULL);
         assert(ttl_hash_get(ht, 3, "key") == &value2);
         assert(cleanup_count == 1);
         assert(last_cleanup_value == &value1);
@@ -74,7 +74,7 @@ int main(void) {
         ttl_hash* ht = ttl_hash_open(10, 5, test_cleanup);
         int value1 = 100;
 
-        assert(ttl_hash_put(ht, 4, "key1", &value1) == 0);
+        assert(ttl_hash_put(ht, 4, "key1", &value1) != NULL);
         assert(ttl_hash_get(ht, 4, "key1") == &value1);
 
         assert(ttl_hash_rem(ht, 4, "key1") == 0);
@@ -95,7 +95,7 @@ int main(void) {
         ttl_hash* ht = ttl_hash_open(10, 3, test_cleanup);
         int value1 = 100;
 
-        assert(ttl_hash_put(ht, 4, "key1", &value1) == 0);
+        assert(ttl_hash_put(ht, 4, "key1", &value1) != NULL);
 
         ttl_hash_tick(ht);
         assert(ttl_hash_get(ht, 4, "key1") == &value1);
@@ -123,7 +123,7 @@ int main(void) {
         ttl_hash* ht = ttl_hash_open(10, 2, test_cleanup);
         int value1 = 100;
 
-        assert(ttl_hash_put(ht, 4, "key1", &value1) == 0);
+        assert(ttl_hash_put(ht, 4, "key1", &value1) != NULL);
 
         ttl_hash_tick(ht);
         assert(ttl_hash_get(ht, 4, "key1") == &value1);
@@ -152,9 +152,9 @@ int main(void) {
         int value2 = 200;
         int value3 = 300;
 
-        assert(ttl_hash_put(ht, 4, "key1", &value1) == 0);
-        assert(ttl_hash_put(ht, 4, "key2", &value2) == 0);
-        assert(ttl_hash_put(ht, 4, "key3", &value3) == 0);
+        assert(ttl_hash_put(ht, 4, "key1", &value1) != NULL);
+        assert(ttl_hash_put(ht, 4, "key2", &value2) != NULL);
+        assert(ttl_hash_put(ht, 4, "key3", &value3) != NULL);
 
         ttl_hash_close(ht);
         assert(cleanup_count == 3);
@@ -170,8 +170,8 @@ int main(void) {
         char bin1[] = {0x00, 0x01, 0x02};
         char bin2[] = {0x00, 0x01, 0x03};
 
-        assert(ttl_hash_put(ht, 3, bin1, &value1) == 0);
-        assert(ttl_hash_put(ht, 3, bin2, &value2) == 0);
+        assert(ttl_hash_put(ht, 3, bin1, &value1) != NULL);
+        assert(ttl_hash_put(ht, 3, bin2, &value2) != NULL);
 
         assert(ttl_hash_get(ht, 3, bin1) == &value1);
         assert(ttl_hash_get(ht, 3, bin2) == &value2);
@@ -188,9 +188,9 @@ int main(void) {
         int value2 = 200;
         int value3 = 300;
 
-        assert(ttl_hash_put(ht, 1, "a", &value1) == 0);
-        assert(ttl_hash_put(ht, 1, "b", &value2) == 0);
-        assert(ttl_hash_put(ht, 1, "c", &value3) == 0);
+        assert(ttl_hash_put(ht, 1, "a", &value1) != NULL);
+        assert(ttl_hash_put(ht, 1, "b", &value2) != NULL);
+        assert(ttl_hash_put(ht, 1, "c", &value3) != NULL);
 
         assert(ttl_hash_get(ht, 1, "a") == &value1);
         assert(ttl_hash_get(ht, 1, "b") == &value2);
@@ -211,7 +211,7 @@ int main(void) {
         ttl_hash* ht = ttl_hash_open(10, 2, NULL);
         int value1 = 100;
 
-        assert(ttl_hash_put(ht, 4, "key1", &value1) == 0);
+        assert(ttl_hash_put(ht, 4, "key1", &value1) != NULL);
         ttl_hash_tick(ht);
         ttl_hash_tick(ht);
         assert(ttl_hash_get(ht, 4, "key1") == NULL);
